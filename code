@@ -1,0 +1,112 @@
+import random
+import string
+
+class PasswordGenerator:
+    def __init__(self):
+        """
+        Конструктор класса PasswordGenerator.
+
+        Параметры:
+        - length: Длина генерируемого пароля (по умолчанию 12).
+        - use_uppercase: Использовать ли символы верхнего регистра (по умолчанию True).
+        - use_digits: Использовать ли цифры (по умолчанию True).
+        - use_special_chars: Использовать ли специальные символы (по умолчанию True).
+        """
+        self.length = 12
+        self.use_uppercase = True
+        self.use_digits = True
+        self.use_special_chars = True
+
+    def generate_password(self):
+        """
+        Генерация пароля.
+
+        Возвращает:
+        - password: Сгенерированный пароль.
+        """
+        characters = string.ascii_lowercase
+        if self.use_uppercase:
+            characters += string.ascii_uppercase
+        if self.use_digits:
+            characters += string.digits
+        if self.use_special_chars:
+            characters += string.punctuation
+
+        password = ''.join(random.choice(characters) for _ in range(self.length))
+        return password
+
+    def set_length(self, length):
+        """
+        Установка длины генерируемого пароля.
+
+        Параметры:
+        - length: Новая длина пароля.
+        """
+        self.length = length
+
+    def set_uppercase(self, use_uppercase):
+        """
+        Включение/выключение использования символов верхнего регистра.
+
+        Параметры:
+        - use_uppercase: True, если использовать символы верхнего регистра, иначе False.
+        """
+        self.use_uppercase = use_uppercase
+
+    def set_digits(self, use_digits):
+        """
+        Включение/выключение использования цифр.
+
+        Параметры:
+        - use_digits: True, если использовать цифры, иначе False.
+        """
+        self.use_digits = use_digits
+
+    def set_special_chars(self, use_special_chars):
+        """
+        Включение/выключение использования специальных символов.
+
+        Параметры:
+        - use_special_chars: True, если использовать специальные символы, иначе False.
+        """
+        self.use_special_chars = use_special_chars
+
+# Интерфейс взаимодействия с пользователем
+def get_user_input(prompt, valid_options):
+    """
+    Получение ввода от пользователя с проверкой на допустимые варианты.
+
+    Параметры:
+    - prompt: Приглашение для пользователя.
+    - valid_options: Допустимые варианты ввода.
+
+    Возвращает:
+    - user_input: Введенное значение пользователя.
+    """
+    while True:
+        user_input = input(prompt).strip().lower()
+        if user_input in valid_options:
+            return user_input
+        else:
+            print("Некорректный ввод. Пожалуйста, выберите из предложенных вариантов.")
+
+# Пример использования класса PasswordGenerator с интерфейсом пользователя
+password_generator = PasswordGenerator()
+
+# Взаимодействие с пользователем для настройки параметров
+password_generator.set_length(int(input("Введите длину пароля: ")))
+
+uppercase_choice = get_user_input("Использовать символы верхнего регистра? (да/нет): ", ["да", "нет"])
+password_generator.set_uppercase(uppercase_choice == "да")
+
+digits_choice = get_user_input("Использовать цифры? (да/нет): ", ["да", "нет"])
+password_generator.set_digits(digits_choice == "да")
+
+special_chars_choice = get_user_input("Использовать специальные символы? (да/нет): ", ["да", "нет"])
+password_generator.set_special_chars(special_chars_choice == "да")
+
+# Генерация пароля
+generated_password = password_generator.generate_password()
+
+# Вывод результата
+print("Сгенерированный пароль:", generated_password)
